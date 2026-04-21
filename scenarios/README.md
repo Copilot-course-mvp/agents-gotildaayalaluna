@@ -82,11 +82,11 @@ Before starting, read the [Domain Model](../docs/domain-model.md) to understand:
 
 | Agent | File | Used In |
 |-------|------|---------|
-| Code Implementation | [code-implementation-agent.md](../agents/code-implementation-agent.md) | Scenario 01 |
-| PR Review | [pr-review-agent.md](../agents/pr-review-agent.md) | Scenario 02 |
-| Testing | [testing-agent.md](../agents/testing-agent.md) | Scenario 03 |
-| Refactoring | [refactoring-agent.md](../agents/refactoring-agent.md) | Scenario 04 |
-| Documentation | [documentation-agent.md](../agents/documentation-agent.md) | Scenario 05 |
+| Code Implementation | [code-implementation-agent.md](../.github/agents/code-implementation-agent.md) | Scenario 01 |
+| PR Review | [pr-review-agent.md](../.github/agents/pr-review-agent.md) | Scenario 02 |
+| Testing | [testing-agent.md](../.github/agents/testing-agent.md) | Scenario 03 |
+| Refactoring | [refactoring-agent.md](../.github/agents/refactoring-agent.md) | Scenario 04 |
+| Documentation | [documentation-agent.md](../.github/agents/documentation-agent.md) | Scenario 05 |
 
 ---
 
