@@ -67,7 +67,7 @@ GitHubCopilot-Agents/
 │   │   └── data.sql             # Sample data loaded on startup
 │   └── test/                    # JUnit 5 + Mockito tests
 │
-├── 🤖 agents/                   # AI agent definitions (system prompts + examples)
+├── 🤖 .github/agents/           # AI agent definitions (system prompts + examples)
 │   ├── README.md                # Agent index
 │   ├── code-implementation-agent.md
 │   ├── pr-review-agent.md
@@ -113,12 +113,12 @@ Read the full [Domain Model](docs/domain-model.md) before starting the exercises
 
 | Agent | File | Purpose |
 |-------|------|---------|
-| 💻 Code Implementation | [agents/code-implementation-agent.md](agents/code-implementation-agent.md) | Complete TODO methods and implement business logic |
-| 🔍 PR Review | [agents/pr-review-agent.md](agents/pr-review-agent.md) | Identify bugs, quality issues, and missing tests in PRs |
-| 📚 Documentation | [agents/documentation-agent.md](agents/documentation-agent.md) | Generate JavaDoc and OpenAPI annotations |
-| 🧪 Testing | [agents/testing-agent.md](agents/testing-agent.md) | Generate JUnit 5 + Mockito test classes |
-| 🏛️ Design & Architecture | [agents/design-architecture-agent.md](agents/design-architecture-agent.md) | Analyse architecture and recommend patterns |
-| ♻️ Refactoring | [agents/refactoring-agent.md](agents/refactoring-agent.md) | Eliminate code smells and improve code quality |
+| 💻 Code Implementation | [.github/agents/code-implementation-agent.md](.github/agents/code-implementation-agent.md) | Complete TODO methods and implement business logic |
+| 🔍 PR Review | [.github/agents/pr-review-agent.md](.github/agents/pr-review-agent.md) | Identify bugs, quality issues, and missing tests in PRs |
+| 📚 Documentation | [.github/agents/documentation-agent.md](.github/agents/documentation-agent.md) | Generate JavaDoc and OpenAPI annotations |
+| 🧪 Testing | [.github/agents/testing-agent.md](.github/agents/testing-agent.md) | Generate JUnit 5 + Mockito test classes |
+| 🏛️ Design & Architecture | [.github/agents/design-architecture-agent.md](.github/agents/design-architecture-agent.md) | Analyse architecture and recommend patterns |
+| ♻️ Refactoring | [.github/agents/refactoring-agent.md](.github/agents/refactoring-agent.md) | Eliminate code smells and improve code quality |
 
 ### How to Use an Agent
 
@@ -174,7 +174,7 @@ Paste an agent's system prompt at the start of a chat to get specialised behavio
 | [Setup Guide](docs/setup-guide.md) | Installation, running, troubleshooting |
 | [Domain Model](docs/domain-model.md) | Business rules, entities, ERD |
 | [API Reference](docs/api-reference.md) | REST endpoints with request/response examples |
-| [Agents Index](agents/README.md) | All available AI agents |
+| [Agents Index](.github/agents/README.md) | All available AI agents |
 | [Scenarios Index](scenarios/README.md) | All hands-on exercises |
 
 ---
@@ -188,7 +188,7 @@ Contributions are welcome! To contribute:
 3. Make your changes and ensure `mvn test` passes
 4. Open a pull request with a clear description
 
-Please use the [PR Review Agent](agents/pr-review-agent.md) to self-review your PR before submitting.
+Please use the [PR Review Agent](.github/agents/pr-review-agent.md) to self-review your PR before submitting.
 
 ---
 
