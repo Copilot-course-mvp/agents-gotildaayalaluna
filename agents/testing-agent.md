@@ -63,7 +63,7 @@ Coverage target: 80% line coverage, 75% branch coverage minimum.
 **Copilot prompt to use:**
 
 ```
-@workspace Generate a complete JUnit 5 test class for EligibilityService.
+#codebase Generate a complete JUnit 5 test class for EligibilityService.
 
 The class has these public methods to test:
 - isEligibleForOffer(Customer customer, Offer offer) — the main method (AND of four conditions)
@@ -232,6 +232,68 @@ class EligibilityServiceTest {
 | **Test exceptions explicitly** | Prompt: "Add a test that asserts CustomerNotFoundException is thrown with message containing the customer ID" |
 | **Run tests after generation** | `mvn test -pl . -Dtest=EligibilityServiceTest` |
 | **Check mock interactions** | Ask Copilot to add `verify(mock, never())` assertions where early returns are expected |
+
+---
+
+## 🏗️ Build This Agent Yourself
+
+This document is the **design specification** for the agent. To invoke it from
+Copilot Chat, commit it as a real Copilot customisation.
+
+> 📖 Work through
+> [Scenario 0 — Author your first Copilot agent](../scenarios/scenario-00-create-an-agent.md)
+> first. The reference implementation ships at
+> [`../.github/prompts/testing.prompt.md`](../.github/prompts/testing.prompt.md).
+
+### Track A — Prompt file (recommended)
+
+Create `.github/prompts/testing.prompt.md`:
+
+```yaml
+---
+mode: agent
+description: Generate JUnit 5 + Mockito unit tests for Spring Boot services and controllers.
+tools: ['codebase', 'editFiles', 'findTestFiles', 'problems', 'search', 'usages']
+---
+```
+
+In the body, keep **only** the rules specific to test authorship (method naming,
+AAA structure, coverage checklist, one behaviour per test, output format).
+The Mockito / JUnit versions and "no `@SpringBootTest` for service tests" rule are
+already in [`../.github/copilot-instructions.md`](../.github/copilot-instructions.md).
+
+### Track B — Custom chat mode
+
+Chat modes are better for *reviewing* than for *generating* tests, but you can
+create `.github/chatmodes/qa-engineer.chatmode.md` if you want a multi-turn testing
+session (e.g. "generate tests, then add boundary cases, then add exception cases").
+Limit the tools to `editFiles`, `findTestFiles`, and `codebase`.
+
+### Track C — Repository instructions
+
+The **Testing Conventions** section of
+[`../.github/copilot-instructions.md`](../.github/copilot-instructions.md) already covers
+`@ExtendWith(MockitoExtension.class)`, `should_X_when_Y` naming, AAA,
+and coverage targets — so every Copilot request in this repo (not just the
+Testing Agent) follows them. Leave it there; keep this agent focused on the
+*coverage checklist* and *output format*.
+
+---
+
+## ✅ How to Verify Your Agent Works
+
+- [ ] `/testing` (or your chosen filename) appears in the Copilot Chat picker
+      after reloading VS Code.
+- [ ] Running the agent with
+      *"Generate tests for `EligibilityService`"* produces a class that:
+  - is annotated with `@ExtendWith(MockitoExtension.class)`,
+  - uses `@Mock` + `@InjectMocks` (no `@SpringBootTest`),
+  - names every test `should_X_when_Y`,
+  - contains explicit `// Arrange`, `// Act`, `// Assert` comments,
+  - covers all four `isEligibleForOffer` branches + the null-tier edge case,
+  - ends with a coverage table mapping tests to branches.
+- [ ] `mvn test` passes with the generated file placed at
+      `src/test/java/com/loyalty/rewards/service/EligibilityServiceTest.java`.
 
 ---
 

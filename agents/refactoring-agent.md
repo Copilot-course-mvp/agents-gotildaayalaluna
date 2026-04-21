@@ -93,7 +93,7 @@ public Transaction createTransaction(Long customerId, Double amount,
 **Copilot prompt to use:**
 
 ```
-@workspace Refactor TransactionService.java to address these code smells:
+#codebase Refactor TransactionService.java to address these code smells:
 
 1. The inline calculation `(int)(amount * 10)` is a magic number — extract to the existing
    POINTS_PER_DOLLAR constant (which already exists in the class)
@@ -201,6 +201,63 @@ from business logic. Single Responsibility Principle.
 | **Ask for the full refactored file** | "Show me the complete refactored version of the file" |
 | **Request explanation** | "Name each Fowler refactoring applied and explain why" |
 | **Check for behaviour change** | "Does this refactoring change any observable behaviour?" |
+
+---
+
+## 🏗️ Build This Agent Yourself
+
+This document is the **design specification**. To invoke the agent from Copilot
+Chat, commit it as a real Copilot customisation.
+
+> 📖 See
+> [Scenario 0 — Author your first Copilot agent](../scenarios/scenario-00-create-an-agent.md).
+> Reference file: [`../.github/prompts/refactoring.prompt.md`](../.github/prompts/refactoring.prompt.md).
+
+### Track A — Prompt file (recommended)
+
+Create `.github/prompts/refactoring.prompt.md`:
+
+```yaml
+---
+mode: agent
+description: Identify code smells and apply safe, behaviour-preserving refactors.
+tools: ['codebase', 'editFiles', 'findTestFiles', 'problems', 'search', 'usages']
+---
+```
+
+Keep the nine non-negotiable rules and the per-change output format
+(`Refactoring name`, `Before`, `After`, `Rationale`) from the
+[🧩 prompt block](#-github-copilot-prompt--instructions). The tech stack and
+Java 17 idiom list are inherited from
+[`../.github/copilot-instructions.md`](../.github/copilot-instructions.md) — drop them here.
+
+### Track B — Custom chat mode
+
+Create `.github/chatmodes/refactorer.chatmode.md` for multi-turn sessions
+("identify smells → apply one → run tests → apply the next"). Include
+`findTestFiles` and `problems` in the tool allow-list so the persona can verify
+each step.
+
+### Track C — Repository instructions
+
+The rule *"Never change observable behaviour"* already belongs in every Copilot
+interaction in this repo — consider adding it to
+[`../.github/copilot-instructions.md`](../.github/copilot-instructions.md) if it isn't already
+covered implicitly by "confirm `mvn test` passes before completing any code
+change."
+
+---
+
+## ✅ How to Verify Your Agent Works
+
+- [ ] `/refactoring` appears in the Copilot Chat picker.
+- [ ] Running the agent on `TransactionService.createTransaction()` produces:
+  - A numbered list of applied refactorings, each with a Fowler name.
+  - Before / After snippets for each change.
+  - The fully refactored file in a single Java code block.
+  - A "tests still pass" note listing the affected test classes.
+- [ ] `mvn test` remains green after applying the refactoring.
+- [ ] The existing `POINTS_PER_DOLLAR` constant is *referenced*, not duplicated.
 
 ---
 

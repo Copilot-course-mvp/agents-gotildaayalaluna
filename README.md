@@ -27,8 +27,15 @@ Five steps to get up and running:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-org/GitHubCopilot-Agents.git
-cd GitHubCopilot-Agents
+#    Replace <your-clone-url> with the URL of YOUR copy of this repo.
+#    When you accept the GitHub Classroom assignment, GitHub creates a new
+#    repository for you under the course organisation with a name like
+#    `agents-<your-github-handle>` (for example,
+#    `https://github.com/Copilot-course-mvp/agents-gotildaayalaluna.git`).
+#    Use that URL — not the original template URL — so that your work is
+#    pushed to your own assignment repository.
+git clone <your-clone-url>
+cd <your-repo-folder>
 
 # 2. Build the project
 mvn clean package -DskipTests
@@ -67,17 +74,23 @@ GitHubCopilot-Agents/
 │   │   └── data.sql             # Sample data loaded on startup
 │   └── test/                    # JUnit 5 + Mockito tests
 │
-├── 🤖 agents/                   # AI agent definitions (system prompts + examples)
-│   ├── README.md                # Agent index
-│   ├── code-implementation-agent.md
-│   ├── pr-review-agent.md
-│   ├── documentation-agent.md
-│   ├── testing-agent.md
-│   ├── design-architecture-agent.md
-│   └── refactoring-agent.md
+├── 🤖 .github/                  # Copilot customisations (loaded automatically)
+│   ├── copilot-instructions.md  # Repo-wide rules injected into every Copilot request
+│   ├── agents/                  # Design docs for the six agents + build-it-yourself guides
+│   │   ├── README.md
+│   │   ├── coding-agent-setup.md       # Customising the cloud Copilot coding agent
+│   │   ├── code-implementation-agent.md
+│   │   ├── pr-review-agent.md
+│   │   ├── documentation-agent.md
+│   │   ├── testing-agent.md
+│   │   ├── design-architecture-agent.md
+│   │   └── refactoring-agent.md
+│   ├── prompts/                 # Reference *.prompt.md files (invoked via Chat `/`)
+│   └── chatmodes/               # Reference *.chatmode.md files (persona + tool-set)
 │
 ├── 🎓 scenarios/                # Hands-on exercises
 │   ├── README.md                # Scenario index with difficulty + time
+│   ├── scenario-00-create-an-agent.md    # Author your first Copilot agent
 │   ├── scenario-01-complete-feature.md
 │   ├── scenario-02-pr-review.md
 │   ├── scenario-03-generate-tests.md
@@ -111,21 +124,39 @@ Read the full [Domain Model](docs/domain-model.md) before starting the exercises
 
 ## 🤖 Available AI Agents
 
-| Agent | File | Purpose |
-|-------|------|---------|
-| 💻 Code Implementation | [agents/code-implementation-agent.md](agents/code-implementation-agent.md) | Complete TODO methods and implement business logic |
-| 🔍 PR Review | [agents/pr-review-agent.md](agents/pr-review-agent.md) | Identify bugs, quality issues, and missing tests in PRs |
-| 📚 Documentation | [agents/documentation-agent.md](agents/documentation-agent.md) | Generate JavaDoc and OpenAPI annotations |
-| 🧪 Testing | [agents/testing-agent.md](agents/testing-agent.md) | Generate JUnit 5 + Mockito test classes |
-| 🏛️ Design & Architecture | [agents/design-architecture-agent.md](agents/design-architecture-agent.md) | Analyse architecture and recommend patterns |
-| ♻️ Refactoring | [agents/refactoring-agent.md](agents/refactoring-agent.md) | Eliminate code smells and improve code quality |
+Each agent has a **design doc** under `agents/` (the spec) and a **reference
+prompt file** under `.github/prompts/` (the real, invokable Copilot customisation).
+The repo-wide rules all agents share live in [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
 
-### How to Use an Agent
+| Agent | Design doc | Reference prompt | Purpose |
+|-------|------------|------------------|---------|
+| 💻 Code Implementation | [design](agents/code-implementation-agent.md) | [prompt](.github/prompts/code-implementation.prompt.md) | Complete TODO methods and implement business logic |
+| 🔍 PR Review | [design](agents/pr-review-agent.md) | [prompt](.github/prompts/pr-review.prompt.md) | Identify bugs, quality issues, and missing tests in PRs |
+| 📚 Documentation | [design](agents/documentation-agent.md) | [prompt](.github/prompts/documentation.prompt.md) | Generate JavaDoc and OpenAPI annotations |
+| 🧪 Testing | [design](agents/testing-agent.md) | [prompt](.github/prompts/testing.prompt.md) | Generate JUnit 5 + Mockito test classes |
+| 🏛️ Design & Architecture | [design](agents/design-architecture-agent.md) | [prompt](.github/prompts/design-architecture.prompt.md) | Analyse architecture and recommend patterns |
+| ♻️ Refactoring | [design](agents/refactoring-agent.md) | [prompt](.github/prompts/refactoring.prompt.md) | Eliminate code smells and improve code quality |
 
-1. Open **GitHub Copilot Chat** in VS Code (`Ctrl+Shift+I`) or IntelliJ
-2. Open the agent's `.md` file and copy the text from the **"GitHub Copilot Prompt / Instructions"** section
-3. Paste it at the top of a new Copilot Chat conversation
-4. Ask your task-specific question
+Two reference **chat modes** are also provided for multi-turn sessions:
+[`senior-java-dev.chatmode.md`](.github/chatmodes/senior-java-dev.chatmode.md) and
+[`code-reviewer.chatmode.md`](.github/chatmodes/code-reviewer.chatmode.md).
+
+### How to Build an Agent (recommended starting point)
+
+Follow [Scenario 0 — Author your first Copilot agent](scenarios/scenario-00-create-an-agent.md).
+By the end of it you will have committed a working `*.prompt.md` and `*.chatmode.md`
+to this repo, and you will understand the difference between repo-wide
+instructions, prompt files, chat modes, and the Copilot coding agent.
+
+### How to Use an Existing Agent
+
+1. Open **GitHub Copilot Chat** in VS Code (`Ctrl+Shift+I`).
+2. **Prompt file:** type `/` in the chat input and pick the prompt you want
+   (e.g. `/testing`), then add your task.
+3. **Chat mode:** use the chat-mode picker (next to Ask / Edit / Agent) to select
+   a persona such as **Senior Java Developer** for a multi-turn session.
+4. The repository instructions in [`.github/copilot-instructions.md`](.github/copilot-instructions.md)
+   are attached to every request automatically — you never paste them manually.
 
 ---
 
@@ -133,13 +164,15 @@ Read the full [Domain Model](docs/domain-model.md) before starting the exercises
 
 | # | Scenario | Difficulty | Time | Agent |
 |---|----------|-----------|------|-------|
+| 00 | [Author Your First Copilot Agent](scenarios/scenario-00-create-an-agent.md) | 🟢 Beginner | 25–35 min | *you build one* |
 | 01 | [Complete the Eligibility Feature](scenarios/scenario-01-complete-feature.md) | 🟢 Beginner | 20–30 min | Code Implementation |
 | 02 | [Review a Pull Request with AI](scenarios/scenario-02-pr-review.md) | 🟡 Intermediate | 25–35 min | PR Review |
 | 03 | [Generate Tests for EligibilityService](scenarios/scenario-03-generate-tests.md) | 🟡 Intermediate | 30–40 min | Testing |
 | 04 | [Refactor the Transaction Service](scenarios/scenario-04-refactor-code.md) | 🟡 Intermediate | 30–40 min | Refactoring |
 | 05 | [Document the Loyalty Rewards API](scenarios/scenario-05-document-api.md) | 🟢 Beginner | 20–30 min | Documentation |
 
-**Recommended order for a full workshop:** 01 → 03 → 02 → 04 → 05
+**Recommended order for a full workshop:** **00** → 01 → 03 → 02 → 04 → 05
+(build the agents once, then use them throughout the rest of the exercises).
 
 See the [Scenarios Index](scenarios/README.md) for learning paths and prerequisites.
 
@@ -156,14 +189,23 @@ Open the chat panel and ask questions about the code:
 - *"Why does hasMinimumPoints return true when loyaltyPoints equals minPoints?"*
 - *"What tests are missing from CustomerServiceTest?"*
 
-### Using `@workspace`
-Prefix your prompt with `@workspace` to give Copilot access to your full project:
+### Using `#codebase`
+Add `#codebase` to your prompt (in Ask mode) to give Copilot access to your full
+project. In Agent mode, Copilot can already search the workspace, but you can still
+attach `#codebase` to force a workspace-wide search:
 ```
-@workspace Complete the isEligibleForOffer method using the helper methods in the class
+#codebase Complete the isEligibleForOffer method using the helper methods in the class
 ```
 
-### Agent Mode (Custom Instructions)
-Paste an agent's system prompt at the start of a chat to get specialised behaviour — the agent acts as a domain expert with specific instructions for your codebase.
+> ℹ️ `#codebase` replaces the deprecated `@workspace` chat participant. You can also
+> scope context more narrowly with `#file:<path>`, `#selection`, `#changes`,
+> `#problems`, etc.
+
+### Custom Agents (prompt files & chat modes)
+Activate one of the six agents shipped in `.github/prompts/` (via the `/` picker)
+or `.github/chatmodes/` (via the mode picker). Each agent is a file you can read,
+edit, and commit — see [Scenario 0](scenarios/scenario-00-create-an-agent.md) to
+build your own from scratch.
 
 ---
 
@@ -174,7 +216,11 @@ Paste an agent's system prompt at the start of a chat to get specialised behavio
 | [Setup Guide](docs/setup-guide.md) | Installation, running, troubleshooting |
 | [Domain Model](docs/domain-model.md) | Business rules, entities, ERD |
 | [API Reference](docs/api-reference.md) | REST endpoints with request/response examples |
-| [Agents Index](agents/README.md) | All available AI agents |
+| [Repository Copilot Instructions](.github/copilot-instructions.md) | Shared project rules attached to every Copilot request |
+| [Agents Index](agents/README.md) | Design docs for all six agents + build-it-yourself guides |
+| [Reference Prompts](.github/prompts/) | Invokable `*.prompt.md` files |
+| [Reference Chat Modes](.github/chatmodes/) | Reusable `*.chatmode.md` personas |
+| [Cloud Coding Agent Setup](agents/coding-agent-setup.md) | Customising the autonomous Copilot coding agent |
 | [Scenarios Index](scenarios/README.md) | All hands-on exercises |
 
 ---

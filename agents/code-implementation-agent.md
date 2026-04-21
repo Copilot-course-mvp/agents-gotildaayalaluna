@@ -27,7 +27,19 @@ The Code Implementation Agent acts as an experienced Java developer who deeply u
 
 ## 🧩 GitHub Copilot Prompt / Instructions
 
-Use the following prompt in GitHub Copilot Chat to activate this agent's behaviour:
+The block below is the agent's **system prompt / persona**. It is *not* auto-loaded by
+Copilot from this file. To turn it into a real, reusable agent, copy it into one of the
+two surfaces that Copilot does discover automatically:
+
+- **Prompt file** — save as `.github/prompts/<name>.prompt.md` to expose it as a
+  `/<name>` slash command in Copilot Chat.
+- **Chat mode** — save as `.github/chatmodes/<name>.chatmode.md` to expose it in the
+  Copilot Chat mode picker as a persistent persona.
+
+See the **"🏗️ Build this agent yourself"** section further down for the exact steps.
+For a quick one-off trial without committing a file, you can also paste the block into
+a fresh Copilot Chat conversation — but the persona will only last for that single
+conversation.
 
 ```
 You are a senior Java developer working on a Spring Boot 3.x loyalty rewards application.
@@ -74,7 +86,7 @@ Also implement checkTransactionLimit() using transactionRepository.findByCustome
 **Copilot prompt to use:**
 
 ```
-@workspace Implement the two TODO methods in EligibilityService.java:
+#codebase Implement the two TODO methods in EligibilityService.java:
 
 1. isEligibleForOffer(Customer customer, Offer offer):
    - Return true only if ALL of these are true:
@@ -123,11 +135,75 @@ public boolean checkTransactionLimit(Long customerId, int maxTransactions) {
 | Tip | Detail |
 |-----|--------|
 | **Give full file context** | Open the target file in your editor before prompting Copilot Chat |
-| **Reference the `@workspace`** | Use `@workspace` so Copilot can see related files (repositories, domain classes) |
+| **Reference the `#codebase`** | Add `#codebase` (the replacement for the deprecated `@workspace`) so Copilot can see related files (repositories, domain classes) |
 | **Specify what NOT to change** | Tell Copilot "do not modify the existing helper methods" to prevent over-engineering |
 | **Verify with tests** | Always run `mvn test` after implementation to confirm correctness |
 | **Ask for edge-case reasoning** | Follow up with "What happens if the offer has no targetTier set?" |
 | **One method at a time** | Focus on one method per prompt for more precise completions |
+
+---
+
+## 🏗️ Build This Agent Yourself
+
+This document is the **design specification** for the agent. To actually invoke it
+from Copilot Chat you need to commit it as a real Copilot customisation. There are
+three tracks — pick one (or do all three as learning exercises).
+
+> 📖 New to this? Start with
+> [Scenario 0 — Author your first Copilot agent](../scenarios/scenario-00-create-an-agent.md).
+> The reference implementation already exists at
+> [`../.github/prompts/code-implementation.prompt.md`](../.github/prompts/code-implementation.prompt.md) —
+> compare your version to it when you are done.
+
+### Track A — Prompt file (recommended first)
+
+Create `.github/prompts/code-implementation.prompt.md`:
+
+```yaml
+---
+mode: agent
+description: Complete TODO methods and implement business logic in the loyalty rewards app.
+tools: ['codebase', 'editFiles', 'findTestFiles', 'problems', 'search', 'usages']
+---
+```
+
+Paste a trimmed version of the [🧩 GitHub Copilot Prompt / Instructions](#-github-copilot-prompt--instructions)
+block above as the body. **Drop** any rule already covered by
+[`../.github/copilot-instructions.md`](../.github/copilot-instructions.md) (tech stack, domain rules,
+constructor injection) — keep only the rules specific to *implementing* code.
+
+### Track B — Custom chat mode
+
+Create `.github/chatmodes/senior-java-dev.chatmode.md` (a reference version already
+ships at [`../.github/chatmodes/senior-java-dev.chatmode.md`](../.github/chatmodes/senior-java-dev.chatmode.md)).
+The persona body should describe how a senior developer works across a
+**multi-turn** session — read-before-write, reuse helpers, small steps, leave tests
+green — rather than rules for a single invocation.
+
+### Track C — Repository instructions
+
+Everything in the **"You are a senior Java developer …"** preamble that applies to
+*every* task in this repo is already in
+[`../.github/copilot-instructions.md`](../.github/copilot-instructions.md) (tech stack, domain rules,
+coding conventions). If you identify additional repo-wide rules while implementing
+a feature, add them there so **every** agent benefits.
+
+---
+
+## ✅ How to Verify Your Agent Works
+
+- [ ] The file exists at the expected path and is committed to the branch.
+- [ ] VS Code has been reloaded (`Ctrl+Shift+P` → *Developer: Reload Window*).
+- [ ] Typing `/` in Copilot Chat shows your prompt file in the picker (Track A).
+- [ ] The chat-mode picker lists your new mode (Track B).
+- [ ] Asking the agent to *"Implement the TODO methods in `EligibilityService.java`"*
+      yields code that:
+  - uses constructor injection (no field `@Autowired`),
+  - reuses `hasMinimumPoints`, `isTierEligible`, `isOfferActive`, and
+    `checkTransactionLimit`,
+  - throws only the existing domain exceptions,
+  - leaves no `TODO` or `UnsupportedOperationException` behind.
+- [ ] `mvn test` still passes after the agent's changes are applied.
 
 ---
 
