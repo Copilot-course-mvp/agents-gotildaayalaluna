@@ -27,8 +27,15 @@ Five steps to get up and running:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-org/GitHubCopilot-Agents.git
-cd GitHubCopilot-Agents
+#    Replace <your-clone-url> with the URL of YOUR copy of this repo.
+#    When you accept the GitHub Classroom assignment, GitHub creates a new
+#    repository for you under the course organisation with a name like
+#    `agents-<your-github-handle>` (for example,
+#    `https://github.com/Copilot-course-mvp/agents-gotildaayalaluna.git`).
+#    Use that URL — not the original template URL — so that your work is
+#    pushed to your own assignment repository.
+git clone <your-clone-url>
+cd <your-repo-folder>
 
 # 2. Build the project
 mvn clean package -DskipTests
