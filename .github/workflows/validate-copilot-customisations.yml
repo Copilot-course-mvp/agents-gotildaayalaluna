@@ -1,0 +1,38 @@
+name: Validate Copilot customisations
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/prompts/**'
+      - '.github/chatmodes/**'
+      - '.github/copilot-instructions.md'
+      - '.github/workflows/validate-copilot-customisations.yml'
+  pull_request:
+    paths:
+      - '.github/prompts/**'
+      - '.github/chatmodes/**'
+      - '.github/copilot-instructions.md'
+      - '.github/workflows/validate-copilot-customisations.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Lint prompt files and chat modes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install PyYAML
+        run: pip install --quiet pyyaml
+
+      - name: Validate front-matter
+        run: python .github/scripts/validate_copilot_customisations.py
