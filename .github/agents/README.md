@@ -48,7 +48,7 @@ To use an agent:
 
 ## 🔗 Related Resources
 
-- [Scenarios](../scenarios/README.md) — Hands-on exercises that use these agents
-- [Setup Guide](../docs/setup-guide.md) — How to run the application and configure Copilot
-- [Domain Model](../docs/domain-model.md) — Business context and entity descriptions
-- [API Reference](../docs/api-reference.md) — REST endpoint documentation
+- [Scenarios](../../scenarios/README.md) — Hands-on exercises that use these agents
+- [Setup Guide](../../docs/setup-guide.md) — How to run the application and configure Copilot
+- [Domain Model](../../docs/domain-model.md) — Business context and entity descriptions
+- [API Reference](../../docs/api-reference.md) — REST endpoint documentation
